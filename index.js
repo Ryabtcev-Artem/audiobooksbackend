@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -6,16 +7,8 @@ const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 const dbPath = path.resolve(process.cwd(), 'views.json');
 
+app.use(cors({ origin: '*' }));
 app.use(express.json());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-  next();
-});
 
 async function readDb() {
   try {
